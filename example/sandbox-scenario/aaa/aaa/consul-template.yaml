@@ -1,0 +1,17 @@
+apiVersion: v1 
+kind: ConfigMap 
+metadata: 
+  labels: 
+    app: aaa
+  name: aaa-consul-template 
+  namespace: aaa
+data: 
+  config.hcl: | 
+    template { 
+    contents = <<EOH
+    {{- with secret "secret/data/sandbox/aaa" }}
+    {{ .Data.data.AAA_SECRET_DATA_WITH_MOUNT_FILE }} 
+    {{ end }}
+    EOH
+    destination = "/vault/secret/AAA_SECRET_DATA_WITH_MOUNT_FILE" 
+    }

@@ -1,0 +1,17 @@
+apiVersion: v1 
+kind: ConfigMap 
+metadata: 
+  labels: 
+    app: bbb
+  name: bbb-consul-template 
+  namespace: bbb
+data: 
+  config.hcl: | 
+    template { 
+    contents = <<EOH
+    {{- with secret "secret/data/sandbox/bbb" }}
+    {{ .Data.data.BBB_SECRET_DATA_WITH_MOUNT_FILE }} 
+    {{ end }}
+    EOH
+    destination = "/vault/secret/BBB_SECRET_DATA_WITH_MOUNT_FILE" 
+    }
